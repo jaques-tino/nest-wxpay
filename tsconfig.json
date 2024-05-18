@@ -3,27 +3,16 @@
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
+    "noLib": false,
     "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
     "target": "ES2021",
-    "sourceMap": true,
+    "sourceMap": false,
     "outDir": "./build",
-    "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "tsBuildInfoFile": ".tsbuildinfo",
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "declarationDir": "./build"
+    "rootDir": "./src",
+    "skipLibCheck": true
   },
-  "exclude": [
-    "dist/*"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts", "tests"]
 }
