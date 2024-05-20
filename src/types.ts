@@ -49,7 +49,7 @@ export interface Promotion {
   goods_detail?: (Omit<GoodsDetail, 'quantity'> & { refund_amount: number; refund_quantity: number })[]
 }
 
-export interface RefundResponseSuccess {
+export interface RefundResponse {
   refund_id: string
   out_refund_no: string
   transaction_id: string
