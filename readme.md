@@ -22,7 +22,8 @@ import { WechatModule } from 'nest-wxpay'
       appid: '公众号的appid',
       mchid: '微信支付商户号',
       serial_no: '商户证书序列号',
-      privateKey: '商户私钥'
+      privateKey: '商户私钥',
+      apiv3Key: 'apiv3密钥'
     })
   ]
 })

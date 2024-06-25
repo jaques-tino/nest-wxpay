@@ -113,7 +113,6 @@ export interface VerifySignOptions {
   nonce_str: string
   requestBody: string
   signature: string
-  serial_no: string
 }
 
 export interface EncryptCertificate {
@@ -293,4 +292,50 @@ export interface DecryptPayCallbackOptions {
    * 加密使用的随机串初始化向量
    */
   nonce: string
+}
+
+export interface PayCallbackResource {
+  /**
+   * 对开启结果数据进行加密的加密算法，目前只支持AEAD_AES_256_GCM
+   */
+  algorithm: string
+  /**
+   * Base64编码后的开启/停用结果数据密文
+   */
+  ciphertext: string
+  /**
+   * 附加数据
+   */
+  associated_data: string
+  /**
+   * 原始回调类型，为transaction
+   */
+  original_type: string
+  /**
+   * 加密使用的随机串
+   */
+  nonce: string
+}
+
+export interface PayCallbackResponse {
+  /**
+   * 通知的唯一ID
+   */
+  id: string
+  /**
+   * 通知创建的时间，遵循rfc3339标准格式
+   */
+  create_time: string
+  /**
+   * 通知的类型，支付成功通知的类型为TRANSACTION.SUCCESS
+   */
+  event_type: string
+  /**
+   * 通知的资源数据类型，支付成功通知为encrypt-resource
+   */
+  resource_type: string
+  /**
+   * 通知资源数据
+   */
+  resource: PayCallbackResource
 }

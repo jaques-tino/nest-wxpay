@@ -219,11 +219,11 @@ export class WechatService extends BaseService {
    */
   public async verifySign(options: VerifySignOptions) {
     const signatureStr = `${options.timestamp}\n${options.nonce_str}\n${options.requestBody}\n`
-    let certificate = this.certificates.find(c => c.serial_no === options.serial_no)
+    let certificate = this.certificates.find(c => c.serial_no === this.options.serial_no)
     if (!certificate) {
       await this.getCertificates()
     }
-    certificate = this.certificates.find(c => c.serial_no === options.serial_no)
+    certificate = this.certificates.find(c => c.serial_no === this.options.serial_no)
     if (!certificate) {
       throw new SIGN_ERROR()
     }
