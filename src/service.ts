@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common'
 import fetch, { Headers } from 'node-fetch'
 import * as crypto from 'crypto'
 import { ACCOUNT_ERROR, APPID_MCHID_NOT_MATCH, BANK_ERROR, FREQUENCY_LIMITED, INVALID_REQUEST, INVALID_TRANSACTIONID, MCH_NOT_EXISTS, NO_AUTH, NOT_ENOUGH, OPENID_MISMATCH, ORDER_CLOSED, ORDER_NOT_EXIST, OUT_TRADE_NO_USED, PARAM_ERROR, RULE_LIMIT, SIGN_ERROR, SYSTEM_ERROR, TRADE_ERROR } from './error'
-import { AllowMethod, BaseService, FundFlowBillOptions, RefundByOutTradeNoOptions, RefundByTransactionIdOptions, RefundResponse, TradeBillOptions, BillResponse, CertificatesResponse, H5Order, H5OrderResponse, JsapiOrder, JsapiOrderResponse, NativeOrder, NativeOrderResponse, Order, ResponseError, VerifySignOptions, WechatOptions, AppOrder, AppOrderResponse } from './types'
+import { AllowMethod, BaseService, FundFlowBillOptions, RefundByOutTradeNoOptions, RefundByTransactionIdOptions, RefundResponse, TradeBillOptions, BillResponse, CertificatesResponse, H5Order, H5OrderResponse, JsapiOrder, JsapiOrderResponse, NativeOrder, NativeOrderResponse, Order, ResponseError, VerifySignOptions, WechatOptions, AppOrder, AppOrderResponse, DecryptPayCallbackOptions } from './types'
 
 @Injectable()
 export class WechatService extends BaseService {
@@ -334,5 +334,22 @@ export class WechatService extends BaseService {
       this.handleError(data as ResponseError)
     }
     return data as BillResponse
+  }
+
+  /**
+   * 支付回调参数解密
+   */
+  public async decryptPayCallback<T extends unknown>(options: DecryptPayCallbackOptions) {
+    const { nonce, associated_data, ciphertext } = options
+    const _ciphertext = Buffer.from(ciphertext, 'base64')
+    const decipher = crypto.createDecipheriv('aes-256-gcm', this.options.apiv3Key, nonce)
+    decipher.setAAD(Buffer.from(associated_data))
+    decipher.setAuthTag(_ciphertext.subarray(_ciphertext.length - 16))
+    const decrypted = decipher.update(_ciphertext.subarray(0, _ciphertext.length - 16), null, 'utf8')
+    try {
+      return JSON.parse(decrypted) as T
+    } catch (err) {
+      return decrypted as T
+    }
   }
 }

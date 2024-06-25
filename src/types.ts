@@ -105,6 +105,7 @@ export interface WechatOptions {
   mchid: string
   serial_no: string
   privateKey: Buffer
+  apiv3Key: string
 }
 
 export interface VerifySignOptions {
@@ -277,4 +278,19 @@ export interface Order {
   amount?: CommRespAmountInfo
   scene_info?: CommRespSceneInfo
   promotion_detail?: PromotionDetail[]
+}
+
+export interface DecryptPayCallbackOptions {
+  /**
+   * Base64编码后的密文
+   */
+  ciphertext: string
+  /**
+   * 附加数据包
+   */
+  associated_data: string
+  /**
+   * 加密使用的随机串初始化向量
+   */
+  nonce: string
 }
